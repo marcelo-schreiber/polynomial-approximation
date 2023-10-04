@@ -25,11 +25,11 @@ size_t findMax(Matrix m, size_t i)
 
 void switchLine(Matrix *m, Vector *c, size_t i, size_t max)
 {
-  double *temp = m->data[i];
+  Interval *temp = m->data[i];
   m->data[i] = m->data[max];
   m->data[max] = temp;
 
-  double t = c->data[i];
+  Interval t = c->data[i];
   c->data[i] = c->data[max];
   c->data[max] = t;
 }
