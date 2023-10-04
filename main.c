@@ -5,3 +5,8 @@
  *
  * Data: 8/10/2023
  */
+
+int main(void)
+{
+  return 0;
+}
