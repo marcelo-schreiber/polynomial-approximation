@@ -18,7 +18,6 @@ CC_FLAGS=-c         \
 				 -mavx			\
 				 -march=native	\
          -Wall      \
-				 -lm 			\
 
  LIKWID_FLAGS=-DLIKWID_PERFMON \
  						 -I{LIKWID_INCLUDE} \
@@ -33,13 +32,13 @@ DISTDIR = `basename mars22-fqv21`
 all: $(PROJ_NAME)
  
 $(PROJ_NAME): $(OBJ)
-		$(CC) $(LIKWID_FLAGS) $^ -o $@ -llikwid
+		$(CC) $(LIKWID_FLAGS) $^ -o $@ -llikwid -lm
  
 %.o: %.c %.h
-		$(CC) -o $@ $< $(CC_FLAGS) $(LIKWID_C)
+		$(CC) -o $@ $< $(CC_FLAGS) $(LIKWID_C) -lm
  
 main.o: main.c $(H_SOURCE)
-		$(CC) $< $(CC_FLAGS) $(LIKWID_FLAGS) -o $@ -llikwid
+		$(CC) $< $(CC_FLAGS) $(LIKWID_FLAGS) -o $@ -llikwid -lm
  
 clean:
 		@rm -f *~ *.bak
