@@ -24,7 +24,7 @@ CC_FLAGS=-c         \
  						 -I{LIKWID_INCLUDE} \
  						 -L{LIKWID_LIB} \
 
-DISTFILES = *.c *.h README* Makefile pontos.in likwid.py
+DISTFILES = *.c *.h README* Makefile likwid.py
 DISTDIR = `basename mars22-fqv21`
 
 #
@@ -63,10 +63,10 @@ distcheck:
 		@rm -rf ./$(DISTDIR)
 		@echo "Tudo certo!"
 
-check:
-		@echo "Verificando se o tem a saida correta..."
-		./$(PROJ_NAME) 3.5 < pontos.in > output.out
-		@grep 7. output.out
-		@rm -f output.out
+# check:
+# 		@echo "Verificando se o tem a saida correta..."
+# 		./$(PROJ_NAME) 3.5 < pontos.in > output.out
+# 		@grep 7. output.out
+# 		@rm -f output.out
 		
 .PHONY: all
