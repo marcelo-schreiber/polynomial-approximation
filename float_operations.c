@@ -85,6 +85,49 @@ Interval interval_div(Interval a, Interval b)
   return interval_mul(a, inverse);
 }
 
+Interval interval_pot(Interval a, Interval b, int p){
+
+  Interval result;
+
+  //se p = 0, a e b são 1
+  if(p == 0){
+    result.lower = 1;
+    result.upper = 1;
+    return result;
+  }
+
+  //se p é ímpar, a e b são elevados a p
+  if(p % 2 != 0){
+    result.lower = pow(a.lower, p);
+    result.upper = pow(a.upper, p);
+    return result;
+  }
+
+  //se p é par e a ≥ 0, a e b são elevados a p
+  if(p % 2 == 0 && a.lower >= 0){
+    result.lower = pow(a.lower, p);
+    result.upper = pow(a.upper, p);
+    return result;
+  }
+
+  //se p é par e b < 0, a e b são elevados a p
+  if(p % 2 == 0 && b.upper < 0){
+    result.lower = pow(b.lower, p);
+    result.upper = pow(b.upper, p);
+    return result;
+  }
+
+  //se p é par e a < 0 ≤ b, a e b são elevados a p
+  if(p % 2 == 0 && a.lower < 0 && b.upper >= 0){
+    result.lower = 0;
+    result.upper = fmax(pow(a.lower, p), pow(b.upper, p));
+    return result;
+  }
+
+  return result;
+
+}
+
 Interval apply_op(Interval a, Interval b, char op)
 {
   printf("[%1.8e,%1.8e] %c [%1.8e,%1.8e] = \n", a.lower, a.upper, op, b.lower, b.upper);
