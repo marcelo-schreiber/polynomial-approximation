@@ -1,28 +1,27 @@
 /*
- * Autores:
- * Marcelo Augusto Rissette Schreiber GRR20220063
- * Felipe Quaresma Vieira GRR20215516
- *
- * Data: 8/10/2023
- */
+
+Autores:
+Marcelo Augusto Rissette Schreiber GRR20220063
+Felipe Quaresma Vieira GRR20215516
+
+*/
 
 #include "matrix.h"
 
-size_t findMax(Matrix m, size_t i)
-{
-  size_t max = i;
+/* Encontra o maior elemento da coluna */
+size_t findMax(Matrix m, size_t i){
 
-  for (size_t j = i + 1; j < m.size; j++)
-  {
-    if (fabs(m.data[j][i].upper) > fabs(m.data[max][i].upper)) // get just the upper
-    {
-      max = j;
+    size_t max = i;
+
+    for(size_t j = i + 1; j < m.size; j++){
+        if (fabs(m.data[j][i].upper) > fabs(m.data[max][i].upper))
+            max = j;
     }
-  }
 
-  return max;
+    return max;
 }
 
+/* Troca linha da matriz */
 void switchLine(Matrix *m, Vector *c, size_t i, size_t max)
 {
   Interval *temp = m->data[i];
@@ -34,14 +33,17 @@ void switchLine(Matrix *m, Vector *c, size_t i, size_t max)
   c->data[max] = t;
 }
 
+/* Eliminação de Gauss com Pivoteamento */
 void gaussEliminationWithPivoting(Matrix *m, Vector *c)
 {
   for (size_t i = 0; i < m->size; i++)
   {
+
+    // Encontra o maior elemento da coluna
     size_t max = findMax(*m, i);
 
     if (max != i)
-    { // switch line
+    { // troca as linhas
       switchLine(m, c, i, max);
     }
 
@@ -63,4 +65,35 @@ void gaussEliminationWithPivoting(Matrix *m, Vector *c)
       c->data[j] = interval_sub(c->data[j], interval_mul(mult, c->data[i]));
     }
   }
+}
+
+/* Imprime um vetor */
+void printVector(Vector v)
+{
+  for (size_t i = 0; i < v.size; i++)
+  {
+    printf("[%lf, %lf]", v.data[i].upper, v.data[i].lower);
+  }
+  printf("\n");
+}
+
+/* Imprime a solução por substituição */
+Vector *printSolutionBySubstitution(Matrix m, Vector c)
+{
+  Vector *solution = (Vector *)malloc(sizeof(Vector));
+  solution->size = m.size;
+  solution->data = (Interval *)malloc(solution->size * sizeof(Interval));
+
+  for (int i = m.size - 1; i >= 0; i--)
+  {
+
+    Interval sum = interval(0.0);
+
+    for (size_t j = i + 1; j < m.size; j++)
+      sum = interval_sum(sum, interval_mul(m.data[i][j], solution->data[j]));
+
+    solution->data[i] = interval_div(interval_sub(c.data[i], sum), m.data[i][i]);
+  }
+
+  return solution;
 }
