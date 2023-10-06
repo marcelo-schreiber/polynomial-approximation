@@ -11,7 +11,13 @@ Felipe Quaresma Vieira GRR20215516
 #include "utils.h"
 #include "matrix.h"
 
-//funcao read points
+//funcao que le n e k
+void read_n_k(int *n, int *k)
+{
+    scanf("%d %d\n", n, k);
+}
+
+//funcao que le os pontos
 points_t *read_points(int n)
 {
     points_t *points = (points_t *)malloc(sizeof(points_t) * (n + 1));
