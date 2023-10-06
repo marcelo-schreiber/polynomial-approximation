@@ -1,20 +1,25 @@
-#include <stdio.h> /* printf */
-#include <math.h>  /* nextafter e INFINITY */
-#include <float.h> /* DBL_MIN, DBL_MAX e DBL_EPSILON */
+#include <stdio.h> 
+#include <math.h>  
+#include <float.h>  
 #include <fenv.h>
 #include <stdint.h>
 
-typedef union
-{
-  double f;
-  uint64_t u;
-} DoubleIntUnion;
+/* Estrutura para conversão double-float */
+typedef union{
+    
+    double f;
+    uint64_t u;
 
-typedef struct
-{
-  double lower;
-  double upper;
-} Interval;
+}DoubleIntUnion;
+
+/* Estrutura de um intervalo */
+typedef struct{
+    
+    double lower;
+    double upper;
+
+}Interval;
+
 
 uint64_t convert_double_to_int64(double dbl);
 
@@ -27,5 +32,5 @@ Interval interval_sum(Interval a, Interval b);
 Interval interval_sub(Interval a, Interval b);
 Interval interval_mul(Interval a, Interval b);
 Interval interval_div(Interval a, Interval b);
-Interval interval_pot(Interval a, Interval b, int p);
 Interval apply_op(Interval a, Interval b, char op);
+Interval interval_pow(Interval i, int p);
