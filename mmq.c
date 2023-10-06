@@ -1,82 +1,72 @@
-// #include <stdio.h>
-// #include <stdlib.h>
+#include "matrix.h"
+#include "mmq.h"
 
-// // funcao para calcular os coeficientes do polinomio de grau N
-// void ajusteMinimosQuadrados(int n, double x[], double y[], int degree, double coefficients[])
-// {
+void aproximate_function_by_points_using_least_square(points_t *points, unsigned int order)
+{
+    int num_points = points->num_of_points;
 
-//     double A[degree + 1][degree + 2];
-//     memset(A, 0, sizeof(A));
+    // Create the coefficient matrix (A) and the right-hand side vector (b)
+    Matrix A;
+    Vector *b = (Vector *)malloc(sizeof(Vector));
+    A.size = order + 1;
+    A.data = (Interval **)malloc(A.size * sizeof(Interval *));
+    b->size = order + 1;
+    b->data = (Interval *)malloc(b->size * sizeof(Interval));
 
-//     int i, j, k;
+    for (int i = 0; i < A.size; i++)
+    {
+        A.data[i] = (Interval *)malloc(A.size * sizeof(Interval));
+        for (int j = 0; j < A.size; j++)
+        {
+            A.data[i][j] = interval(0.0);
+            for (int k = 0; k < num_points; k++)
+            {
+                // A.data[i][j] = interval_sum(A.data[i][j], interval(pow(points->points[k].x, i + j)));
+                A.data[i][j] = interval_sum(A.data[i][j], interval_pow(interval(points->points[k].x), i + j));
+            }
+        }
+    }
 
-//     // Preenche a matriz A com os somatórios necessários
-//     for (i = 0; i <= degree; i++)
-//     {
-//         for (j = 0; j <= degree; j++)
-//         {
-//             for (k = 0; k < n; k++)
-//             {
-//                 A[i][j] += pow(x[k], i + j);
-//             }
-//         }
-//     }
+    for (int i = 0; i < b->size; i++)
+    {
+        b->data[i] = interval(0.0);
+        for (int k = 0; k < num_points; k++)
+        {
+            // b->data[i] = interval_sum(b->data[i], interval_mul(interval(pow(points->points[k].x, i)), interval(points->points[k].y)));
+            b->data[i] = interval_sum(b->data[i], interval_mul(interval_pow(interval(points->points[k].x), i), interval(points->points[k].y)));
+        }
+    }
 
-//     // Preenche a última coluna de A com os somatórios necessários
-//     for (i = 0; i <= degree; i++)
-//     {
-//         for (k = 0; k < n; k++)
-//         {
-//             A[i][degree + 1] += y[k] * pow(x[k], i);
-//         }
-//     }
+    // Solve the linear system using Gauss elimination with pivoting
+    gaussEliminationWithPivoting(&A, b);
+    b = printSolutionBySubstitution(A, *b);
+    // The solution in the 'b' vector now contains the coefficients of the polynomial
+    // You can use these coefficients to construct the polynomial function
 
-//     // Eliminação de Gauss
-//     for (i = 0; i < degree; i++)
-//     {
-//         for (j = i + 1; j <= degree; j++)
-//         {
-//             double m = A[j][i] / A[i][i];
-//             for (k = 0; k <= degree + 1; k++)
-//             {
-//                 A[j][k] -= m * A[i][k];
-//             }
-//         }
-//     }
+    // print the solution
+    printf("Final solution:\n");
+    for (int i = 0; i < b->size; i++)
+    {
+        printf("b[%d] = [%1.16e, %1.16e]\n", i, b->data[i].lower, b->data[i].upper);
+    }
 
-//     // Substituição retroativa
-//     for (i = degree; i >= 0; i--)
-//     {
-//         coefficients[i] = A[i][degree + 1];
-//         for (j = i + 1; j <= degree; j++)
-//         {
-//             coefficients[i] -= A[i][j] * coefficients[j];
-//         }
-//         coefficients[i] /= A[i][i];
-//     }
+    printf("residuals:\n");
 
-//     // Os coeficientes do polinomio são armazenados no vetor coefficients
-//     for (i = 0; i <= degree; i++)
-//     {
-//         coefficients[i] = A[i][degree + 1];
-//     }
-// }
+    for (int i = 0; i < num_points; i++)
+    {
+        Interval sum = interval(0.0);
+        for (int j = 0; j < b->size; j++)
+        {
+            sum = interval_sum(sum, interval_mul(b->data[j], interval_pow(interval(points->points[i].x), j)));
+        }
+        printf("r[%d] = [%f, %f]\n", i, interval_sub(interval(points->points[i].y), sum).lower, interval_sub(interval(points->points[i].y), sum).upper);
+    }
 
-// int main(void)
-// {
-
-//     int n, k, i;
-
-//     scanf("%d", &n);
-
-//     scanf("%d", &k);
-
-//     double x[k], y[k];
-
-//     for (i = 0; i < k; i++)
-//     {
-//         scanf("%lf %lf", &x[i], &y[i]);
-//     }
-
-//     return 0;
-// }
+    // Clean up memory
+    for (int i = 0; i < A.size; i++)
+    {
+        free(A.data[i]);
+    }
+    free(A.data);
+    free(b->data);
+}

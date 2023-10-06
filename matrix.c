@@ -82,12 +82,6 @@ Vector *printSolutionBySubstitution(Matrix m, Vector c)
 
   for (int i = m.size - 1; i >= 0; i--)
   {
-    // double sum = 0;
-
-    // for (size_t j = i + 1; j < m.size; j++)
-    //   sum += m.data[i][j] * solution->data[j];
-
-    // solution->data[i] = (c.data[i] - sum) / m.data[i][i];
 
     Interval sum = interval(0.0);
 
@@ -96,9 +90,6 @@ Vector *printSolutionBySubstitution(Matrix m, Vector c)
 
     solution->data[i] = interval_div(interval_sub(c.data[i], sum), m.data[i][i]);
   }
-
-  printf("Solution: ");
-  printVector(*solution);
 
   return solution;
 }
