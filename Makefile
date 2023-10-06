@@ -1,4 +1,4 @@
-PROJ_NAME=interpola
+PROJ_NAME=ajustePol
  
 # .c files
 C_SOURCE=$(wildcard *.c)
@@ -19,9 +19,9 @@ CC_FLAGS=-c         \
 				 -march=native	\
          -Wall      \
 
-#  LIKWID_FLAGS=-DLIKWID_PERFMON \
-#  						 -I{LIKWID_INCLUDE} \
-#  						 -L{LIKWID_LIB} \
+ LIKWID_FLAGS=-DLIKWID_PERFMON \
+ 						 -I{LIKWID_INCLUDE} \
+ 						 -L{LIKWID_LIB} \
 
 DISTFILES = *.c *.h README* Makefile likwid.py
 DISTDIR = `basename mars22-fqv21`
@@ -44,7 +44,7 @@ clean:
 		@rm -f *~ *.bak
 
 purge:  clean
-		@rm -f $(PROG) *.o core a.out interpola 
+		@rm -f $(PROG) *.o core a.out $(PROJ_NAME) 
 		@rm -rf $(DISTDIR) $(DISTDIR).tar
 
 dist:
@@ -60,12 +60,13 @@ distcheck:
 		@cd $(DISTDIR) && make
 		@cd $(DISTDIR) && make check
 		@rm -rf ./$(DISTDIR)
-		@echo "Tudo certo!"
+		@echo "dist check correto!"
 
-# check:
-# 		@echo "Verificando se o tem a saida correta..."
-# 		./$(PROJ_NAME) 3.5 < pontos.in > output.out
-# 		@grep 7. output.out
-# 		@rm -f output.out
+check:
+		@echo "Verificando se o tem a saida correta..."
+		./$(PROJ_NAME) < teste.in > output.out
+		@diff output.out expected.out
+		@echo "check correto!"
+
 		
 .PHONY: all
