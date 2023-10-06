@@ -23,7 +23,9 @@ CC_FLAGS=-c         \
  						 -I{LIKWID_INCLUDE} \
  						 -L{LIKWID_LIB} \
 
-DISTFILES = *.c *.h README* Makefile likwid.py
+
+# TODO: mudar para o caminho do likwid e adicionar likwid python
+DISTFILES = *.c *.h README* Makefile
 DISTDIR = `basename mars22-fqv21`
 
 #
@@ -58,7 +60,10 @@ distcheck:
 		@make dist
 		@tar -xvf $(DISTDIR).tar
 		@cd $(DISTDIR) && make
-		@cd $(DISTDIR) && make check
+
+		@cd $(DISTDIR) && ./$(PROJ_NAME) < ../teste.in > ../output.out
+		@cd $(DISTDIR) && diff ../output.out ../expected.out
+
 		@rm -rf ./$(DISTDIR)
 		@echo "dist check correto!"
 
