@@ -44,13 +44,14 @@ void aproximate_function_by_points_using_least_square(points_t *points, unsigned
     // You can use these coefficients to construct the polynomial function
 
     // print the solution
-    printf("Final solution:\n");
+    // [a0inf,a0sup] [a1inf,a1sup] [a2inf,a2sup] … [aNinf,aNsup]
+    // [r0inf,r0sup] [r1inf,r1sup] [r2inf,r2sup] … [rKinf,rKsup]
+
     for (int i = 0; i < b->size; i++)
     {
-        printf("b[%d] = [%1.16e, %1.16e]\n", i, b->data[i].lower, b->data[i].upper);
+        printf("[%1.8e,%1.8e] ", b->data[i].lower, b->data[i].upper);
     }
-
-    printf("residuals:\n");
+    printf("\n");
 
     for (int i = 0; i < num_points; i++)
     {
@@ -59,8 +60,9 @@ void aproximate_function_by_points_using_least_square(points_t *points, unsigned
         {
             sum = interval_sum(sum, interval_mul(b->data[j], interval_pow(interval(points->points[i].x), j)));
         }
-        printf("r[%d] = [%f, %f]\n", i, interval_sub(interval(points->points[i].y), sum).lower, interval_sub(interval(points->points[i].y), sum).upper);
+        printf("[%1.8e,%1.8e] ", interval_sub(interval(points->points[i].y), sum).lower, interval_sub(interval(points->points[i].y), sum).upper);
     }
+    printf("\n");
 
     // Clean up memory
     for (int i = 0; i < A.size; i++)
