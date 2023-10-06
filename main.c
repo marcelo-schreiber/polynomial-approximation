@@ -7,6 +7,7 @@
  */
 
 #include "mmq.h"
+#include "auxiliares.h"
 #include <stdio.h>
 
 int main(void)
