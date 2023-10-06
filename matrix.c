@@ -64,3 +64,76 @@ void gaussEliminationWithPivoting(Matrix *m, Vector *c)
     }
   }
 }
+
+void printVector(Vector v)
+{
+  for (size_t i = 0; i < v.size; i++)
+  {
+    printf("[%lf, %lf]", v.data[i].upper, v.data[i].lower);
+  }
+  printf("\n");
+}
+
+Vector *printSolutionBySubstitution(Matrix m, Vector c)
+{
+  Vector *solution = (Vector *)malloc(sizeof(Vector));
+  solution->size = m.size;
+  solution->data = (Interval *)malloc(solution->size * sizeof(Interval));
+
+  for (int i = m.size - 1; i >= 0; i--)
+  {
+
+    Interval sum = interval(0.0);
+
+    for (size_t j = i + 1; j < m.size; j++)
+      sum = interval_sum(sum, interval_mul(m.data[i][j], solution->data[j]));
+
+    solution->data[i] = interval_div(interval_sub(c.data[i], sum), m.data[i][i]);
+  }
+
+  return solution;
+}
+
+int testeGauss(void)
+{
+  Matrix m;
+  Vector c;
+
+  m.size = 3;
+  m.data = malloc(m.size * sizeof(Interval *));
+  for (size_t i = 0; i < m.size; i++)
+  {
+    m.data[i] = malloc(m.size * sizeof(Interval));
+  }
+
+  c.size = 3;
+  c.data = malloc(c.size * sizeof(Interval));
+
+  // x + 2y - 2z = -15
+  // 2x + y - 5z = -21
+  // x - 4y + z = 18
+
+  m.data[0][0] = interval(1.0);
+  m.data[0][1] = interval(2.0);
+  m.data[0][2] = interval(-2.0);
+
+  printf("%.24f\n", m.data[0][0].upper);
+  printf("%.24f\n", m.data[0][0].lower);
+
+  m.data[1][0] = interval(2.0);
+  m.data[1][1] = interval(1.0);
+  m.data[1][2] = interval(-5.0);
+
+  m.data[2][0] = interval(1.0);
+  m.data[2][1] = interval(-4.0);
+  m.data[2][2] = interval(1.0);
+
+  c.data[0] = interval(-15.0);
+  c.data[1] = interval(-21.0);
+  c.data[2] = interval(18.0);
+
+  gaussEliminationWithPivoting(&m, &c);
+  printSolutionBySubstitution(m, c);
+
+  return 0;
+}

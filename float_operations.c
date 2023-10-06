@@ -7,6 +7,7 @@
  */
 
 #include "float_operations.h"
+#include <math.h>
 
 uint64_t convert_double_to_int64(double dbl)
 {
@@ -83,6 +84,54 @@ Interval interval_div(Interval a, Interval b)
   inverse.upper = 1 / b.lower;
 
   return interval_mul(a, inverse);
+}
+
+// [a,b]p =    [1,1]                      se p = 0
+//                  [ap,bp]                   se p é ímpar
+//                  [ap,bp]                   se p é par e a ≥ 0
+//                  [bp,ap]                   se p é par e b < 0
+//                  [0,max{ap,bp}]     se p é par e a < 0 ≤ b
+Interval interval_pow(Interval i, int p)
+{
+  Interval result;
+  double a = i.lower;
+  double b = i.upper;
+
+  if (p == 0)
+  {
+    result = interval(1);
+    return result;
+  }
+
+  if (p % 2 != 0)
+  {
+    result.lower = pow(a, p);
+    result.upper = pow(b, p);
+    return result;
+  }
+
+  if (a >= 0)
+  {
+    result.lower = pow(a, p);
+    result.upper = pow(b, p);
+    return result;
+  }
+
+  if (b < 0)
+  {
+    result.lower = pow(b, p);
+    result.upper = pow(a, p);
+    return result;
+  }
+
+  if (a < 0 && b >= 0)
+  {
+    result.lower = 0;
+    result.upper = fmax(pow(a, p), pow(b, p));
+    return result;
+  }
+
+  return result;
 }
 
 Interval apply_op(Interval a, Interval b, char op)

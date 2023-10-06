@@ -28,3 +28,4 @@ Interval interval_sub(Interval a, Interval b);
 Interval interval_mul(Interval a, Interval b);
 Interval interval_div(Interval a, Interval b);
 Interval apply_op(Interval a, Interval b, char op);
+Interval interval_pow(Interval i, int p);
