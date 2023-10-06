@@ -19,9 +19,9 @@ CC_FLAGS=-c         \
 				 -march=native	\
          -Wall      \
 
- LIKWID_FLAGS=-DLIKWID_PERFMON \
- 						 -I{LIKWID_INCLUDE} \
- 						 -L{LIKWID_LIB} \
+#  LIKWID_FLAGS=-DLIKWID_PERFMON \
+#  						 -I{LIKWID_INCLUDE} \
+#  						 -L{LIKWID_LIB} \
 
 DISTFILES = *.c *.h README* Makefile likwid.py
 DISTDIR = `basename mars22-fqv21`
@@ -32,13 +32,13 @@ DISTDIR = `basename mars22-fqv21`
 all: $(PROJ_NAME)
  
 $(PROJ_NAME): $(OBJ)
-		$(CC) $(LIKWID_FLAGS) $^ -o $@ -llikwid -lm
+		$(CC) $(LIKWID_FLAGS) $^ -o $@ -lm
  
 %.o: %.c %.h
 		$(CC) -o $@ $< $(CC_FLAGS) $(LIKWID_C) -lm
  
 main.o: main.c $(H_SOURCE)
-		$(CC) $< $(CC_FLAGS) $(LIKWID_FLAGS) -o $@ -llikwid -lm
+		$(CC) $< $(CC_FLAGS) $(LIKWID_FLAGS) -o $@ -lm
  
 clean:
 		@rm -f *~ *.bak

@@ -6,7 +6,10 @@
  * Data: 8/10/2023
  */
 
+#include "matrix.h"
+
 int main(void)
 {
+  testeGauss();
   return 0;
 }

@@ -17,3 +17,4 @@ typedef struct
 } Vector;
 
 void gaussEliminationWithPivoting(Matrix *m, Vector *c);
+int testeGauss(void);
