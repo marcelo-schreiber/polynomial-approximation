@@ -1,8 +1,6 @@
 #include "mmq.h"
 #include <stdio.h>
 
-
-
 void print_residue(points_t *points, Vector *b)
 {
     int num_points = points->num_of_points;
@@ -18,8 +16,6 @@ void print_residue(points_t *points, Vector *b)
     }
     printf("\n");
 }
-
-
 
 void aproximate_function_by_points_using_least_square(points_t *points, unsigned int order)
 {
