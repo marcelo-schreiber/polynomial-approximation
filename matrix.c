@@ -8,7 +8,26 @@
 
 #include "matrix.h"
 
-size_t findMax(Matrix m, size_t i)
+Matrix* initialize_matrix(unsigned int order) {
+    Matrix *A = (Matrix *)malloc(sizeof(Matrix));
+    A->size = order;
+    A->data = (Interval **)malloc(A->size * sizeof(Interval *));
+
+    for (int i = 0; i < A->size; i++)
+    {
+        A->data[i] = (Interval *)malloc(A->size * sizeof(Interval));
+    }
+    return A;
+}
+
+Vector* initialize_vector(unsigned int order) {
+    Vector *b = (Vector *)malloc(sizeof(Vector));
+    b->size = order;
+    b->data = (Interval *)malloc(b->size * sizeof(Interval));
+    return b;
+}
+
+size_t find_max(Matrix m, size_t i)
 {
   size_t max = i;
 
@@ -23,7 +42,7 @@ size_t findMax(Matrix m, size_t i)
   return max;
 }
 
-void switchLine(Matrix *m, Vector *c, size_t i, size_t max)
+void switch_line(Matrix *m, Vector *c, size_t i, size_t max)
 {
   Interval *temp = m->data[i];
   m->data[i] = m->data[max];
@@ -34,15 +53,15 @@ void switchLine(Matrix *m, Vector *c, size_t i, size_t max)
   c->data[max] = t;
 }
 
-void gaussEliminationWithPivoting(Matrix *m, Vector *c)
+void triangulate_matrix_by_gauss(Matrix *m, Vector *c)
 {
   for (size_t i = 0; i < m->size; i++)
   {
-    size_t max = findMax(*m, i);
+    size_t max = find_max(*m, i);
 
     if (max != i)
     { // switch line
-      switchLine(m, c, i, max);
+      switch_line(m, c, i, max);
     }
 
     for (size_t j = i + 1; j < m->size; j++)
@@ -65,20 +84,18 @@ void gaussEliminationWithPivoting(Matrix *m, Vector *c)
   }
 }
 
-void printVector(Vector v)
+void print_vector(Vector v)
 {
-  for (size_t i = 0; i < v.size; i++)
-  {
-    printf("[%lf, %lf]", v.data[i].upper, v.data[i].lower);
-  }
-  printf("\n");
+    for (int i = 0; i < v.size; i++)
+    {
+        printf("[%1.8e,%1.8e] ", v.data[i].lower, v.data[i].upper);
+    }
+    printf("\n");
 }
 
-Vector *printSolutionBySubstitution(Matrix m, Vector c)
+Vector *get_solution_by_substitution(Matrix m, Vector c)
 {
-  Vector *solution = (Vector *)malloc(sizeof(Vector));
-  solution->size = m.size;
-  solution->data = (Interval *)malloc(solution->size * sizeof(Interval));
+  Vector *solution = initialize_vector(m.size);
 
   for (int i = m.size - 1; i >= 0; i--)
   {
@@ -94,46 +111,18 @@ Vector *printSolutionBySubstitution(Matrix m, Vector c)
   return solution;
 }
 
-int testeGauss(void)
+void free_matrix(Matrix *A)
 {
-  Matrix m;
-  Vector c;
+    for (int i = 0; i < A->size; i++)
+    {
+        free(A->data[i]);
+    }
+    free(A->data);
+    free(A);
+}
 
-  m.size = 3;
-  m.data = malloc(m.size * sizeof(Interval *));
-  for (size_t i = 0; i < m.size; i++)
-  {
-    m.data[i] = malloc(m.size * sizeof(Interval));
-  }
-
-  c.size = 3;
-  c.data = malloc(c.size * sizeof(Interval));
-
-  // x + 2y - 2z = -15
-  // 2x + y - 5z = -21
-  // x - 4y + z = 18
-
-  m.data[0][0] = interval(1.0);
-  m.data[0][1] = interval(2.0);
-  m.data[0][2] = interval(-2.0);
-
-  printf("%.24f\n", m.data[0][0].upper);
-  printf("%.24f\n", m.data[0][0].lower);
-
-  m.data[1][0] = interval(2.0);
-  m.data[1][1] = interval(1.0);
-  m.data[1][2] = interval(-5.0);
-
-  m.data[2][0] = interval(1.0);
-  m.data[2][1] = interval(-4.0);
-  m.data[2][2] = interval(1.0);
-
-  c.data[0] = interval(-15.0);
-  c.data[1] = interval(-21.0);
-  c.data[2] = interval(18.0);
-
-  gaussEliminationWithPivoting(&m, &c);
-  printSolutionBySubstitution(m, c);
-
-  return 0;
+void free_vector(Vector *b)
+{
+    free(b->data);
+    free(b);
 }

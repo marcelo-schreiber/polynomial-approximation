@@ -6,28 +6,21 @@
  * Data: 8/10/2023
  */
 
-#include "mmq.h"
-#include <stdio.h>
+#include "main_io.h"
 
 int main(void)
 {
+  int n, k;
+  
+  read_n_k(&n, &k);
 
-  int n, k, i;
-  scanf("%d", &n);
-  scanf("%d", &k);
+  points_t *points = read_points(k);
 
-  points_t *points = (points_t *)malloc(sizeof(points_t) * (k + 1));
-  points->num_of_points = k - 1;
-  points->points = (point_t *)malloc(points->num_of_points * sizeof(point_t));
+  aproximate_function_by_points_using_least_square(points, n);
 
-  for (i = 0; i < points->num_of_points; i++)
-  {
-    scanf("%lf %lf\n", &(points->points[i].x), &(points->points[i].y));
-  }
+  free_points(points);
 
-  aproximate_function_by_points_using_least_square(points, n - 1);
-
-  return 0;
+  return EXIT_SUCCESS;
 }
 
 // return 0;

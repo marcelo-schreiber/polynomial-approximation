@@ -16,6 +16,25 @@ typedef struct
   Interval *data;
 } Vector;
 
-void gaussEliminationWithPivoting(Matrix *m, Vector *c);
-Vector *printSolutionBySubstitution(Matrix m, Vector c);
-int testeGauss(void);
+typedef struct point
+{
+    double x;
+    double y;
+} point_t;
+
+typedef struct points
+{
+    point_t *points;
+    int num_of_points;
+} points_t;
+
+void triangulate_matrix_by_gauss(Matrix *m, Vector *c);
+Vector *get_solution_by_substitution(Matrix m, Vector c);
+
+Matrix* initialize_matrix(unsigned int order);
+Vector* initialize_vector(unsigned int order);
+
+void print_vector(Vector v);
+
+void free_matrix(Matrix *A);
+void free_vector(Vector *b);
