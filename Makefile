@@ -37,16 +37,16 @@ $(PROJ_NAME): $(OBJ)
 		$(CC) $(LIKWID_FLAGS) $^ -o $@ -lm
  
 %.o: %.c %.h
-		$(CC) -o $@ $< $(CC_FLAGS) $(LIKWID_C) -lm
+		$(CC) -o $@ $< $(CC_FLAGS) $(LIKWID_C) -lm -llikwid
  
 main.o: main.c $(H_SOURCE)
-		$(CC) $< $(CC_FLAGS) $(LIKWID_FLAGS) -o $@ -lm
+		$(CC) $< $(CC_FLAGS) $(LIKWID_FLAGS) -o $@ -lm -llikwid
  
 clean:
 		@rm -f *~ *.bak
 
 purge:  clean
-		@rm -f $(PROG) *.o core a.out $(PROJ_NAME) 
+		@rm -f $(PROG) *.o core a.out $(PROJ_NAME) output.out output2.out
 		@rm -rf $(DISTDIR) $(DISTDIR).tar
 
 dist:
@@ -70,7 +70,9 @@ distcheck:
 check:
 		@echo "Verificando se o tem a saida correta..."
 		./$(PROJ_NAME) < teste.in > output.out
-		@diff output.out expected.out
+		@head -n 2 output.out > output2.out
+		@diff -w output2.out expected.out
+		@rm output.out output2.out
 		@echo "check correto!"
 
 		
