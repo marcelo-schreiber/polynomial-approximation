@@ -25,7 +25,7 @@ CC_FLAGS=-c         \
 
 
 # TODO: mudar para o caminho do likwid e adicionar likwid python
-DISTFILES = *.c *.h README* Makefile
+DISTFILES = *.c *.h README* Makefile likwid.py pontos.in teste.in expected.out
 DISTDIR = `basename mars22-fqv21`
 
 #
@@ -34,7 +34,7 @@ DISTDIR = `basename mars22-fqv21`
 all: $(PROJ_NAME)
  
 $(PROJ_NAME): $(OBJ)
-		$(CC) $(LIKWID_FLAGS) $^ -o $@ -lm
+		$(CC) $(LIKWID_FLAGS) $^ -o $@ -lm -llikwid
  
 %.o: %.c %.h
 		$(CC) -o $@ $< $(CC_FLAGS) $(LIKWID_C) -lm -llikwid
@@ -42,10 +42,10 @@ $(PROJ_NAME): $(OBJ)
 main.o: main.c $(H_SOURCE)
 		$(CC) $< $(CC_FLAGS) $(LIKWID_FLAGS) -o $@ -lm -llikwid
  
-clean:
+softclean:
 		@rm -f *~ *.bak
 
-purge:  clean
+clean:  softclean
 		@rm -f $(PROG) *.o core a.out $(PROJ_NAME) output.out output2.out
 		@rm -rf $(DISTDIR) $(DISTDIR).tar
 
@@ -59,10 +59,9 @@ distcheck:
 		@echo "Verificando se o código compila ..."
 		@make dist
 		@tar -xvf $(DISTDIR).tar
-		@cd $(DISTDIR) && make
 
-		@cd $(DISTDIR) && ./$(PROJ_NAME) < ../teste.in > ../output.out
-		@cd $(DISTDIR) && diff ../output.out ../expected.out
+		@cd $(DISTDIR) && make
+		@cd $(DISTDIR) && make check
 
 		@rm -rf ./$(DISTDIR)
 		@echo "dist check correto!"

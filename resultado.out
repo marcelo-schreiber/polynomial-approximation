@@ -1,0 +1,74 @@
+--------------------------------------------------------------------------------
+CPU name:	AMD Ryzen 5 3500U with Radeon Vega Mobile Gfx  
+CPU type:	AMD K17 (Zen+) architecture
+CPU clock:	2.09 GHz
+--------------------------------------------------------------------------------
+[-4.26286816e+145,4.26286816e+145] [-2.41054500e+149,2.41054500e+149] [-5.78588538e+152,5.78588538e+152] [-1.82502605e+156,1.82502605e+156] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] [-inf,inf] 
+[-1.79769313e+308,1.79769313e+308]  [-1.79769313e+308,1.79769313e+308]  [-1.79769313e+308,1.79769313e+308]  [-1.79769313e+308,1.79769313e+308]  [-1.79769313e+308,1.79769313e+308]  [-1.79769313e+308,1.79769313e+308]  [-1.79769313e+308,1.79769313e+308]  [-1.79769313e+308,1.79769313e+308]  [-1.79769313e+308,1.79769313e+308]  [-1.79769313e+308,1.79769313e+308]  [-1.79769313e+308,1.79769313e+308]  [-1.79769313e+308,1.79769313e+308]  [-1.79769313e+308,1.79769313e+308]  [-1.79769313e+308,1.79769313e+308]  
+2.00399800e+00
+1.21536900e+00
+--------------------------------------------------------------------------------
+Region generate_matrix, Group 1: ENERGY
++-------------------+------------+
+|    Region Info    | HWThread 3 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.001761 |
+|     call count    |          1 |
++-------------------+------------+
+
++----------------------+---------+------------+
+|         Event        | Counter | HWThread 3 |
++----------------------+---------+------------+
+|   ACTUAL_CPU_CLOCK   |  FIXC1  |    6928381 |
+|     MAX_CPU_CLOCK    |  FIXC2  |    3932292 |
+| RETIRED_INSTRUCTIONS |   PMC0  |   15377880 |
+|  CPU_CLOCKS_UNHALTED |   PMC1  |    6437078 |
+|   RAPL_CORE_ENERGY   |   PWR0  |     0.0110 |
+|    RAPL_PKG_ENERGY   |   PWR1  |     0.0229 |
++----------------------+---------+------------+
+
++----------------------+------------+
+|        Metric        | HWThread 3 |
++----------------------+------------+
+|  Runtime (RDTSC) [s] |     0.0018 |
+| Runtime unhalted [s] |     0.0033 |
+|      Clock [MHz]     |  3689.5472 |
+|          CPI         |     0.4186 |
+|    Energy Core [J]   |     0.0110 |
+|    Power Core [W]    |     6.2402 |
+|    Energy PKG [J]    |     0.0229 |
+|     Power PKG [W]    |    13.0352 |
++----------------------+------------+
+
+Region solve_system, Group 1: ENERGY
++-------------------+------------+
+|    Region Info    | HWThread 3 |
++-------------------+------------+
+| RDTSC Runtime [s] |   0.000985 |
+|     call count    |          1 |
++-------------------+------------+
+
++----------------------+---------+------------+
+|         Event        | Counter | HWThread 3 |
++----------------------+---------+------------+
+|   ACTUAL_CPU_CLOCK   |  FIXC1  |    4050130 |
+|     MAX_CPU_CLOCK    |  FIXC2  |    2300865 |
+| RETIRED_INSTRUCTIONS |   PMC0  |    9576991 |
+|  CPU_CLOCKS_UNHALTED |   PMC1  |    3658515 |
+|   RAPL_CORE_ENERGY   |   PWR0  |     0.0112 |
+|    RAPL_PKG_ENERGY   |   PWR1  |     0.0241 |
++----------------------+---------+------------+
+
++----------------------+------------+
+|        Metric        | HWThread 3 |
++----------------------+------------+
+|  Runtime (RDTSC) [s] |     0.0010 |
+| Runtime unhalted [s] |     0.0019 |
+|      Clock [MHz]     |  3686.0812 |
+|          CPI         |     0.3820 |
+|    Energy Core [J]   |     0.0112 |
+|    Power Core [W]    |    11.4020 |
+|    Energy PKG [J]    |     0.0241 |
+|     Power PKG [W]    |    24.4771 |
++----------------------+------------+
+
