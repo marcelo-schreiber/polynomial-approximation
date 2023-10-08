@@ -6,7 +6,7 @@
  * Data: 8/10/2023
  */
 
-#include "float_operations.h"
+#include "interval_operations.h"
 #include <math.h>
 
 uint64_t convert_double_to_int64(double dbl)
